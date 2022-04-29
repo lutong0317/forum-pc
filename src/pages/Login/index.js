@@ -3,27 +3,37 @@ import { Card, Form, Input, Button, Checkbox, message } from 'antd'
 import logo from '../../assets/logo.png'
 import { useDispatch } from 'react-redux'
 import { login } from '@/store/actions'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import styles from './index.module.scss'
 
-import './index.scss'
 const Login = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-
+  const location = useLocation()
   // 表单提交
-  const onFinish = values => {
-    // 将需要的参数传给login action
-    dispatch(login({ mobile: values.mobile, code: values.code }))
+  const onFinish = async values => {
+    try {
+      // 将需要的参数传给login action
+      await dispatch(login({ mobile: values.mobile, code: values.code }))
 
-    // 成功提示：
-    message.success('登陆成功', 1.5, () => {
-      // 登陆成功后 跳转到首页
-      history.replace('/home')
-    })
+      // 成功提示：
+      message.success('登陆成功', 1.5, () => {
+        // 登陆成功后 跳转到首页
+        // 如果是重定向到的login页面，就直接返回原来访问的页面
+        // 如果不是，就说明直接访问的登录页面，此时，默认进入home即可
+        history.replace(location.state?.from ?? '/home')
+      })
+    } catch (e) {
+      if (!e.response) {
+        message.warning('网络繁忙，请稍后再试')
+      } else {
+        message.warning(e.response?.data?.message || '好像出错了~')
+      }
+    }
   }
 
   return (
-    <div className='login'>
+    <div className={styles.root}>
       <Card className='login-container'>
         <img className='login-logo' src={logo} alt='' />
         <Form

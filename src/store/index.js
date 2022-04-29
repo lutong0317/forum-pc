@@ -3,12 +3,13 @@ import { rootReducer } from './reducers'
 
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { getToken } from '@/utils'
 
 const middlewares = composeWithDevTools(applyMiddleware(thunk))
 
 // 为了在刷新页面时，能让redux能拿到token值。可以为createStore设置默认值
 const initialState = {
-  login: localStorage.getItem('forum-pc-token')
+  login: getToken()
 }
 
 const store = createStore(rootReducer, initialState, middlewares)

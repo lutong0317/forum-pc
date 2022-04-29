@@ -6,6 +6,7 @@ import './App.css'
 import Login from './pages/Login'
 import Layout from './pages/Layout'
 import NotFound from './pages/NotFound'
+import { AuthRoute } from '@/components/AuthRoute'
 
 function App () {
   return (
@@ -13,7 +14,7 @@ function App () {
       <div className="app">
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/home" />} />
-          <Route path="/home" component={Layout}></Route>
+          <AuthRoute path="/home" component={Layout}></AuthRoute>
           <Route path="/login" component={Login}></Route>
           {/* 404 */}
           <Route>
