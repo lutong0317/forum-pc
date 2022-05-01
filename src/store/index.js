@@ -3,7 +3,7 @@ import { rootReducer } from './reducers'
 
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { getToken } from '@/utils'
+import { getToken } from '@/utils/token'
 
 const middlewares = composeWithDevTools(applyMiddleware(thunk))
 
@@ -11,7 +11,6 @@ const middlewares = composeWithDevTools(applyMiddleware(thunk))
 const initialState = {
   login: getToken()
 }
-
 const store = createStore(rootReducer, initialState, middlewares)
 
 export default store

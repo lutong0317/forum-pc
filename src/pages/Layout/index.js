@@ -6,20 +6,27 @@ import {
   LogoutOutlined
 } from '@ant-design/icons'
 import styles from './index.module.scss'
-import { Route, Link, useLocation } from 'react-router-dom'
+import { Route, Link, useLocation, useHistory } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserInfo } from '@/store/actions'
+import { getUserInfo, logout } from '@/store/actions'
 
 import Home from '../Home'
 import Article from '../Article'
 import Publish from '../Publish'
 
 const { Header, Sider } = Layout
-
 const GeekLayout = () => {
   const location = useLocation()
   const dispatch = useDispatch()
+  const history = useHistory()
+  // 退出
+  const onLogout = () => {
+    dispatch(logout())
+    // 返回登录页面
+    history.push('/login')
+  }
+
   const { name } = useSelector(state => state.user)
   useEffect(() => {
     try {
@@ -36,7 +43,7 @@ const GeekLayout = () => {
         <div className="user-info">
           <span className="user-name">{name}</span>
           <span className="user-logout">
-            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消">
+            <Popconfirm title="是否确认退出？" okText="退出" cancelText="取消" onConfirm={onLogout}>
               <LogoutOutlined /> 退出
             </Popconfirm>
           </span>
